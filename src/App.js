@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {Route, Link, Routes} from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const Posts = React.lazy(() => import('./pages/posts/Posts'));
+const AddPost = React.lazy(() => import('./pages/addPost/AddPost'));
+const PostDetails = React.lazy(() => import('./pages/postDetails/PostDetails'));
+class App extends React.Component{
+  
+  render(){
+    return (
+      <div className="container">
+        <div>
+          <Link to="/">Post</Link>
+          <Link to="/add-post">Add Post</Link>
+        </div>
+        <div>
+          <Routes>
+            <Route exact path="/" element={
+                <React.Suspense fallback={<>...</>}>
+                  <Posts/>
+                </React.Suspense>
+              }/>
+            <Route path="/add-post" element={
+                <React.Suspense fallback={<>...</>}>
+                  <AddPost/>
+                </React.Suspense>
+              }/>
+            <Route path="/post-details/:id" element={
+                <React.Suspense fallback={<>...</>}>
+                  <PostDetails/>
+                </React.Suspense>
+              }/>
+          </Routes>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
